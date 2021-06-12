@@ -5,22 +5,25 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
-import java.util.Optional;
 
-@Table("users")
+@Table("user")
 public class UserEntity
 {
-    @Id private final Long id;
-    private final String sessionId;
-    private final String name;
-    private final Long gameId;
+    @Id
+    public final Long id;
+    public final String sessionId;
+    public final String name;
 
-    UserEntity(Long id, String sessionId, String name, Long gameId)
+    UserEntity(Long id, String sessionId, String name)
     {
         this.id = id;
         this.sessionId = sessionId;
         this.name = name;
-        this.gameId = gameId;
+    }
+
+    public static UserEntity create(String sessionId)
+    {
+        return new UserEntity(null, sessionId, User.DEFAULT_NAME);
     }
 
     public static UserEntity from(User user)
@@ -28,8 +31,7 @@ public class UserEntity
         return new UserEntity(
                 user.id(),
                 user.sessionId(),
-                user.name(),
-                user.gameId().orElse(null));
+                user.name());
     }
 
     public static User toUser(UserEntity entity)
@@ -38,28 +40,7 @@ public class UserEntity
                 .id(entity.id)
                 .sessionId(entity.sessionId)
                 .name(entity.name)
-                .gameId(Optional.ofNullable(entity.gameId))
                 .build();
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public String getSessionId()
-    {
-        return sessionId;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public Long getGameId()
-    {
-        return gameId;
     }
 
     @Override
@@ -68,13 +49,13 @@ public class UserEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(sessionId, that.sessionId) && Objects.equals(name, that.name) && Objects.equals(gameId, that.gameId);
+        return Objects.equals(id, that.id) && Objects.equals(sessionId, that.sessionId) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, sessionId, name, gameId);
+        return Objects.hash(id, sessionId, name);
     }
 
     @Override
@@ -84,7 +65,6 @@ public class UserEntity
                 "id=" + id +
                 ", sessionId='" + sessionId + '\'' +
                 ", name='" + name + '\'' +
-                ", gameId=" + gameId +
                 '}';
     }
 }

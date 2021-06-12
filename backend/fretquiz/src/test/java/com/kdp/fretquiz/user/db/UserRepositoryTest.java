@@ -1,5 +1,7 @@
-package com.kdp.fretquiz.user;
+package com.kdp.fretquiz.user.db;
 
+import com.kdp.fretquiz.user.UserEntity;
+import com.kdp.fretquiz.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +25,7 @@ class UserRepositoryTest
     {
         assertTrue(userRepository.findAll().isEmpty());
 
-        final var user = User.create("s0");
-
-        final var entity = UserEntity.from(user);
-        userRepository.save(entity);
+        final var entity = userRepository.save(UserEntity.create("s0"));
 
         assertEquals(1, userRepository.findAll().size());
     }
@@ -34,16 +33,15 @@ class UserRepositoryTest
     @Test
     void find()
     {
-        var user = User.create("s0");
+        final var entity = userRepository.save(UserEntity.create("s0"));
 
-        final var entity = userRepository.save(UserEntity.from(user));
-        user = UserEntity.toUser(entity);
+        final var user = UserEntity.toUser(entity);
 
         assertNotNull(user.id());
-        assertEquals(entity.getId(), user.id());
+        assertEquals(entity.id, user.id());
 
         final var foundEntity = userRepository
-                .findById(entity.getId())
+                .findById(entity.id)
                 .orElseThrow();
 
         final var foundUser = UserEntity.toUser(foundEntity);
