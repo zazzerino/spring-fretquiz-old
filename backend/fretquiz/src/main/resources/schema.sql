@@ -1,4 +1,4 @@
---drop table if exists game_round;
+drop table if exists guess;
 drop table if exists round;
 drop table if exists game_user;
 drop table if exists opts;
@@ -42,7 +42,10 @@ create table round (
     is_over boolean
 );
 
---create table game_round (
---    game_entity integer,
---    round integer
---);
+create table guess (
+    game_entity integer,
+    game_key integer,
+    round_key integer,
+    user_id integer,
+    is_correct boolean
+);

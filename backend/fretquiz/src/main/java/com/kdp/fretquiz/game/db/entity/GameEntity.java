@@ -19,7 +19,12 @@ public class GameEntity
     public final Set<UserRef> users;
     public final List<RoundEntity> rounds;
 
-    public GameEntity(Long id, Game.Status status, OptsEntity opts, Long hostId, Set<UserRef> users, List<RoundEntity> rounds)
+    public GameEntity(Long id,
+                      Game.Status status,
+                      OptsEntity opts,
+                      Long hostId,
+                      Set<UserRef> users,
+                      List<RoundEntity> rounds)
     {
         this.id = id;
         this.status = status;
@@ -35,7 +40,12 @@ public class GameEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameEntity that = (GameEntity) o;
-        return Objects.equals(id, that.id) && status == that.status && Objects.equals(opts, that.opts) && Objects.equals(hostId, that.hostId) && Objects.equals(users, that.users) && Objects.equals(rounds, that.rounds);
+        return Objects.equals(id, that.id)
+                && status == that.status
+                && Objects.equals(opts, that.opts)
+                && Objects.equals(hostId, that.hostId)
+                && Objects.equals(users, that.users)
+                && Objects.equals(rounds, that.rounds);
     }
 
     @Override

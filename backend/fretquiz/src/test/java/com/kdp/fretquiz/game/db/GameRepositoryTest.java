@@ -1,10 +1,7 @@
 package com.kdp.fretquiz.game.db;
 
 import com.kdp.fretquiz.game.Game;
-import com.kdp.fretquiz.game.db.entity.GameEntity;
-import com.kdp.fretquiz.game.db.entity.RoundEntity;
-import com.kdp.fretquiz.game.db.entity.UserRef;
-import com.kdp.fretquiz.game.db.entity.OptsEntity;
+import com.kdp.fretquiz.game.db.entity.*;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +37,17 @@ class GameRepositoryTest
                 List.of(1, 2),
                 List.of("FLAT", "SHARP"));
 
+        final var guess = new GuessEntity(4L, false);
+
+        final var round = new RoundEntity("C4", false, List.of(guess));
+
         var game = new GameEntity(
                 null,
                 Game.Status.INIT,
                 opts,
                 4L,
                 Set.of(new UserRef(4L)),
-                List.of(new RoundEntity("C4", false)));
+                List.of(round));
 
         game = gameRepository.save(game);
 

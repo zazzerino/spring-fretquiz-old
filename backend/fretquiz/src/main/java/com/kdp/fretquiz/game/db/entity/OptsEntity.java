@@ -18,7 +18,13 @@ public class OptsEntity
     public final List<Integer> strings;
     public final List<String> accidentals;
 
-    public OptsEntity(Long id, int roundCount, int startFret, int endFret, List<String> tuning, List<Integer> strings, List<String> accidentals)
+    public OptsEntity(Long id,
+                      int roundCount,
+                      int startFret,
+                      int endFret,
+                      List<String> tuning,
+                      List<Integer> strings,
+                      List<String> accidentals)
     {
         this.id = id;
         this.roundCount = roundCount;
@@ -35,7 +41,13 @@ public class OptsEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OptsEntity that = (OptsEntity) o;
-        return roundCount == that.roundCount && startFret == that.startFret && endFret == that.endFret && Objects.equals(id, that.id) && Objects.equals(tuning, that.tuning) && Objects.equals(strings, that.strings) && Objects.equals(accidentals, that.accidentals);
+        return roundCount == that.roundCount
+                && startFret == that.startFret
+                && endFret == that.endFret
+                && Objects.equals(id, that.id)
+                && Objects.equals(tuning, that.tuning)
+                && Objects.equals(strings, that.strings)
+                && Objects.equals(accidentals, that.accidentals);
     }
 
     @Override
