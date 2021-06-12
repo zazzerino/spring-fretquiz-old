@@ -34,7 +34,7 @@ class UserRepositoryTest
         final var user = entity.toUser();
 
         assertNotNull(user.id());
-        assertEquals(entity.id, user.id().orElseThrow());
+        assertEquals(entity.id, user.id());
 
         final var foundEntity = userRepository
                 .findById(entity.id)

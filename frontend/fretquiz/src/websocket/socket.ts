@@ -20,6 +20,10 @@ client.onConnect = _frame => {
     userCallback(JSON.parse(msg.body) as Response);
   });
 
+  client.subscribe('/user/topic/game', msg => {
+
+  });
+
   client.publish({
     destination: '/app/user/connect'
   });
