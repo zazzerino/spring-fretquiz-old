@@ -1,5 +1,6 @@
 package com.kdp.fretquiz.user;
 
+import com.kdp.fretquiz.user.ImmutableUser;
 import com.kdp.fretquiz.user.db.UserEntity;
 import com.kdp.fretquiz.user.db.UserRepository;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,25 @@ public class UserService
         return entity.toUser();
     }
 
-    public void handleDisconnect(String sessionId)
+    public User updateName(String sessionId, String name)
     {
-//        final var userEntity = userRepository.findBy
+        var user = userRepository
+                .findBySessionId(sessionId)
+                .orElseThrow()
+                .toUser();
+
+        user = ImmutableUser.copyOf(user).withName(name);
+
+        userRepository.save(UserEntity.from(user));
+        return user;
+    }
+
+    public void delete(String sessionId)
+    {
+        final var entity = userRepository
+                .findBySessionId(sessionId)
+                .orElseThrow();
+
+        userRepository.delete(entity);
     }
 }
