@@ -1,51 +1,51 @@
-drop table if exists guess;
-drop table if exists round;
-drop table if exists game_user;
-drop table if exists opts;
-drop table if exists game;
-drop table if exists "user";
+DROP TABLE IF EXISTS guess;
+DROP TABLE IF EXISTS round;
+DROP TABLE IF EXISTS game_user;
+DROP TABLE IF EXISTS opts;
+DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS "user";
 
 -- always double-quote "user" or it will conflict with default postgres user table
 
-create table "user" (
-    id serial primary key,
-    session_id text,
-    name text
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    session_id TEXT,
+    name TEXT
 );
 
-create table game (
-    id serial primary key,
-    status text,
-    host integer
+CREATE TABLE game (
+    id SERIAL PRIMARY KEY,
+    status TEXT,
+    host INTEGER
 );
 
-create table opts (
-    id serial primary key,
-    game_entity integer,
-    round_count integer,
-    start_fret integer,
-    end_fret integer,
-    tuning text[],
-    strings integer[],
-    accidentals text[]
+CREATE TABLE opts (
+    id SERIAL PRIMARY KEY,
+    game_entity INTEGER,
+    round_count INTEGER,
+    start_fret INTEGER,
+    end_fret INTEGER,
+    tuning TEXT[],
+    strings INTEGER[],
+    accidentals TEXT[]
 );
 
-create table game_user (
-    game_entity integer,
-    "user" integer
+CREATE TABLE game_user (
+    game_entity INTEGER,
+    "user" INTEGER
 );
 
-create table round (
-    game_entity integer,
-    game_key integer,
-    note_to_guess text,
-    is_over boolean
+CREATE TABLE round (
+    game_entity INTEGER,
+    game_key INTEGER,
+    note_to_guess TEXT,
+    is_over BOOLEAN
 );
 
-create table guess (
-    game_entity integer,
-    game_key integer,
-    round_key integer,
-    user_id integer,
-    is_correct boolean
+CREATE TABLE guess (
+    game_entity INTEGER,
+    game_key INTEGER,
+    round_key INTEGER,
+    user_id INTEGER,
+    is_correct BOOLEAN
 );

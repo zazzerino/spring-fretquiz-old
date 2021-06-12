@@ -14,8 +14,8 @@ public interface GameRepository extends CrudRepository<GameEntity, Long>
     List<GameEntity> findAll();
 
     @Query("""
-            select "user".* from "user"
-            left join game_user on "user".id = game_user.user
-            where game_user.game_entity = :gameId""")
+            SELECT "user".* FROM "user"
+            LEFT JOIN game_user ON "user".id = game_user.user
+            WHERE game_user.game_entity = :gameId""")
     List<UserEntity> findUsers(@Param("gameId") Long gameId);
 }
