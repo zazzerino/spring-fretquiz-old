@@ -22,29 +22,37 @@ class UserRepositoryTest
     void create()
     {
         assertTrue(userRepository.findAll().isEmpty());
-
-        final var entity = userRepository.save(UserEntity.create("s0"));
-
+        final var entity = userRepository.save(new UserEntity(null, "s0", "anon"));
         assertEquals(1, userRepository.findAll().size());
     }
 
     @Test
     void find()
     {
-        final var entity = userRepository.save(UserEntity.create("s0"));
+        final var entity = userRepository.save(new UserEntity(null, "s0", "anon"));
 
-        final var user = UserEntity.toUser(entity);
+        final var user = entity.toUser();
 
         assertNotNull(user.id());
-        assertEquals(entity.id, user.id());
+        assertEquals(entity.id, user.id().orElseThrow());
 
         final var foundEntity = userRepository
                 .findById(entity.id)
                 .orElseThrow();
 
-        final var foundUser = UserEntity.toUser(foundEntity);
+        final var foundUser = foundEntity.toUser();
 
         assertEquals(entity, foundEntity);
         assertEquals(user, foundUser);
+    }
+
+    @Test
+    void findBySessionId()
+    {
+        var entity = new UserEntity(null, "s0", "anon");
+        entity = userRepository.save(entity);
+
+        final var found = userRepository.findBySessionId("s0").orElseThrow();
+        assertEquals(entity, found);
     }
 }

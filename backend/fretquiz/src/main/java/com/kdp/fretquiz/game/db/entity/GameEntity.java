@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Table("game")
@@ -43,7 +44,7 @@ public class GameEntity
                 .toList();
 
         return ImmutableGame.builder()
-                .id(id)
+                .id(Optional.ofNullable(id))
                 .status(status)
                 .opts(opts.toOpts())
                 .hostId(host)

@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Table("user")
 public class UserEntity
@@ -30,17 +31,17 @@ public class UserEntity
     public static UserEntity from(User user)
     {
         return new UserEntity(
-                user.id(),
+                user.id().orElse(null),
                 user.sessionId(),
                 user.name());
     }
 
-    public static User toUser(UserEntity entity)
+    public User toUser()
     {
         return ImmutableUser.builder()
-                .id(entity.id)
-                .sessionId(entity.sessionId)
-                .name(entity.name)
+                .id(Optional.ofNullable(id))
+                .sessionId(sessionId)
+                .name(name)
                 .build();
     }
 

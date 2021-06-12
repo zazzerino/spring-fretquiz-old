@@ -3,6 +3,9 @@ import { setUser } from '../user/userSlice';
 import { Login, Response } from './response';
 
 export function userCallback(response: Response) {
+  console.log('/user/topic/user')
+  console.log(response);
+
   switch (response.type) {
     case 'LOGIN': return handleLogin(response as Login);
   }
