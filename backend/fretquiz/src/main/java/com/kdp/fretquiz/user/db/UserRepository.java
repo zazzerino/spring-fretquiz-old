@@ -1,4 +1,4 @@
-package com.kdp.fretquiz.user;
+package com.kdp.fretquiz.user.db;
 
 import org.springframework.data.repository.CrudRepository;
 

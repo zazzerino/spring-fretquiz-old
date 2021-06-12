@@ -1,4 +1,4 @@
-package com.kdp.fretquiz.game;
+package com.kdp.fretquiz.game.db.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;

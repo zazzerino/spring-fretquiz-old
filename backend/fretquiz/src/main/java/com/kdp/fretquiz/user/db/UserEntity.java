@@ -1,6 +1,7 @@
-package com.kdp.fretquiz.user;
+package com.kdp.fretquiz.user.db;
 
 import com.kdp.fretquiz.user.ImmutableUser;
+import com.kdp.fretquiz.user.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 

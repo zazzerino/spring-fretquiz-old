@@ -1,7 +1,5 @@
 package com.kdp.fretquiz.user.db;
 
-import com.kdp.fretquiz.user.UserEntity;
-import com.kdp.fretquiz.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

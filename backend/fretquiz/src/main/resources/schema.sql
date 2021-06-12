@@ -29,6 +29,6 @@ create table opts (
 );
 
 create table game_user (
-    game integer,
+    game_entity integer,
     "user" integer
 );

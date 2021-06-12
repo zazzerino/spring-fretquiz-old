@@ -1,9 +1,9 @@
 package com.kdp.fretquiz.game.db;
 
 import com.kdp.fretquiz.game.Game;
-import com.kdp.fretquiz.game.GameRepository;
-import com.kdp.fretquiz.game.GameEntity;
-import com.kdp.fretquiz.game.OptsEntity;
+import com.kdp.fretquiz.game.db.entity.GameEntity;
+import com.kdp.fretquiz.game.db.entity.GameUser;
+import com.kdp.fretquiz.game.db.entity.OptsEntity;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,7 +43,8 @@ class GameRepositoryTest
                 null,
                 Game.Status.INIT,
                 opts,
-                4L);
+                4L,
+                Set.of(new GameUser(4L)));
 
         game = gameRepository.save(game);
 
@@ -54,10 +56,6 @@ class GameRepositoryTest
 
         log.info("found by id: " + foundById);
 
-        final var foundByHostId = gameRepository
-                .findByHostId(4L)
-                .orElseThrow();
-
-        log.info("found by host id: " + foundByHostId);
+        assertEquals(1, gameRepository.findAll().size());
     }
 }

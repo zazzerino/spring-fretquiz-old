@@ -1,16 +1,14 @@
-package com.kdp.fretquiz.game;
+package com.kdp.fretquiz.game.db.entity;
 
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("game_user")
 public class GameUser
 {
-    public final Long game;
     public final Long user;
 
-    public GameUser(Long game, Long user)
+    public GameUser(Long user)
     {
-        this.game = game;
         this.user = user;
     }
 }
