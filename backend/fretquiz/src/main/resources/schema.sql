@@ -1,3 +1,5 @@
+--drop table if exists game_round;
+drop table if exists round;
 drop table if exists game_user;
 drop table if exists opts;
 drop table if exists game;
@@ -32,3 +34,15 @@ create table game_user (
     game_entity integer,
     "user" integer
 );
+
+create table round (
+    game_entity integer,
+    game_key integer,
+    note_to_guess text,
+    is_over boolean
+);
+
+--create table game_round (
+--    game_entity integer,
+--    round integer
+--);
