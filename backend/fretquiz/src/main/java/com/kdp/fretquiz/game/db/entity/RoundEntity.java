@@ -1,5 +1,8 @@
 package com.kdp.fretquiz.game.db.entity;
 
+import com.kdp.fretquiz.game.ImmutableRound;
+import com.kdp.fretquiz.game.Round;
+import com.kdp.fretquiz.theory.Note;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
@@ -17,6 +20,19 @@ public class RoundEntity
         this.noteToGuess = noteToGuess;
         this.isOver = isOver;
         this.guesses = guesses;
+    }
+
+    public Round toRound()
+    {
+        final var guesses = this.guesses.stream()
+                .map(GuessEntity::toGuess)
+                .toList();
+
+        return ImmutableRound.builder()
+                .noteToGuess(Note.from(noteToGuess))
+                .isOver(isOver)
+                .guesses(guesses)
+                .build();
     }
 
     @Override

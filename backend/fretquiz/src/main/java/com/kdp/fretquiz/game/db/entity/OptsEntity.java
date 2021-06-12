@@ -1,5 +1,9 @@
 package com.kdp.fretquiz.game.db.entity;
 
+import com.kdp.fretquiz.game.ImmutableOpts;
+import com.kdp.fretquiz.game.Opts;
+import com.kdp.fretquiz.theory.Accidental;
+import com.kdp.fretquiz.theory.Fretboard;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -33,6 +37,21 @@ public class OptsEntity
         this.tuning = tuning;
         this.strings = strings;
         this.accidentals = accidentals;
+    }
+
+    public Opts toOpts()
+    {
+        final var fretboard = new Fretboard(tuning, startFret, endFret);
+        final var accidentals = this.accidentals.stream()
+                .map(Accidental::valueOf)
+                .toList();
+
+        return ImmutableOpts.builder()
+                .roundCount(roundCount)
+                .fretboard(fretboard)
+                .strings(strings)
+                .accidentals(accidentals)
+                .build();
     }
 
     @Override

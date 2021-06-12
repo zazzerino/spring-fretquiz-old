@@ -16,7 +16,7 @@ create table "user" (
 create table game (
     id serial primary key,
     status text,
-    host_id integer
+    host integer
 );
 
 create table opts (

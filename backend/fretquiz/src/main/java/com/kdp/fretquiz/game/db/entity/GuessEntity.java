@@ -1,5 +1,7 @@
 package com.kdp.fretquiz.game.db.entity;
 
+import com.kdp.fretquiz.game.Guess;
+import com.kdp.fretquiz.game.ImmutableGuess;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
@@ -14,6 +16,14 @@ public class GuessEntity
     {
         this.userId = userId;
         this.isCorrect = isCorrect;
+    }
+
+    public Guess toGuess()
+    {
+        return ImmutableGuess.builder()
+                .userId(userId)
+                .isCorrect(isCorrect)
+                .build();
     }
 
     @Override

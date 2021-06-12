@@ -9,6 +9,7 @@ import java.util.Set;
 @Value.Immutable
 public abstract class Opts
 {
+    public abstract int roundCount();
     public abstract Fretboard fretboard();
     public abstract Set<Integer> strings();
     public abstract Set<Accidental> accidentals();

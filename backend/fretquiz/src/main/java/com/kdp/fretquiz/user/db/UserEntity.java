@@ -15,7 +15,7 @@ public class UserEntity
     public final String sessionId;
     public final String name;
 
-    UserEntity(Long id, String sessionId, String name)
+    public UserEntity(Long id, String sessionId, String name)
     {
         this.id = id;
         this.sessionId = sessionId;
