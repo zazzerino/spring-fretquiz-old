@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -49,8 +50,10 @@ class GameRepositoryTest
 
         final var round = new RoundEntity("C4", false, List.of(guess));
 
+
         var game = new GameEntity(
                 null,
+                new Date(),
                 Game.Status.INIT,
                 opts,
                 4L,
@@ -95,6 +98,7 @@ class GameRepositoryTest
 
         var game = new GameEntity(
                 null,
+                new Date(),
                 Game.Status.INIT,
                 opts,
                 user0.id,

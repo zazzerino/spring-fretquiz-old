@@ -26,14 +26,14 @@ public class GameController
 
     public void sendGames(WebSocketSession session)
     {
-        final var games = gameService.getAllGames();
+        final var games = gameService.getAllGamesByNewest();
         final var response = new GamesResponse(games);
         sessions.sendTo(session, response);
     }
 
     public void broadcastGames()
     {
-        final var games = gameService.getAllGames();
+        final var games = gameService.getAllGamesByNewest();
         sessions.broadcast(new GamesResponse(games));
     }
 

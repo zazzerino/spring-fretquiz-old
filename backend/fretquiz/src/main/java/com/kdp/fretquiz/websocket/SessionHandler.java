@@ -1,6 +1,7 @@
 package com.kdp.fretquiz.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kdp.fretquiz.websocket.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,10 @@ public class SessionHandler
     private final Logger log = LoggerFactory.getLogger(SessionHandler.class);
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
+    private final ObjectMapper mapper = JsonMapper.builder()
+            .findAndAddModules()
+            .build();
+
     public void add(WebSocketSession session)
     {
         sessions.put(session.getId(), session);
@@ -32,9 +37,7 @@ public class SessionHandler
     public void sendTo(WebSocketSession session, Response response)
     {
         try {
-            final var text = new ObjectMapper()
-                    .writeValueAsString(response);
-
+            final var text = mapper.writeValueAsString(response);
             session.sendMessage(new TextMessage(text));
         } catch (IOException e) {
             log.error(e.getMessage(), e);

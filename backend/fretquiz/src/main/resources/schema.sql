@@ -15,6 +15,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE game (
     id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP,
     status TEXT,
     host INTEGER
 );

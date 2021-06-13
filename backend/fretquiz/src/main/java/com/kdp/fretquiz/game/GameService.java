@@ -6,6 +6,7 @@ import com.kdp.fretquiz.user.User;
 import com.kdp.fretquiz.user.db.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,22 @@ public class GameService
                 .toList();
     }
 
+    public List<Game> getAllGamesByNewest()
+    {
+        return gameRepository.findAll().stream()
+                .map(entity -> {
+                    final var users = gameRepository
+                            .findUsers(entity.id)
+                            .stream()
+                            .map(UserEntity::toUser)
+                            .toList();
+
+                    return entity.toGameWith(users);
+                })
+                .sorted((g1, g2) -> g2.createdAt().compareTo(g1.createdAt()))
+                .toList();
+    }
+
     public Optional<Game> getGameById(Long gameId)
     {
         final var users = gameRepository
@@ -55,6 +72,8 @@ public class GameService
 
     public Game createWith(User host)
     {
+        removeFromCurrentGame(host);
+
         final var entity = gameRepository.save(
                 GameEntity.createWith(host));
 

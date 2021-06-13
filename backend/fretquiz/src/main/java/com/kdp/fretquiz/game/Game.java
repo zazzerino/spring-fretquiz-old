@@ -5,6 +5,7 @@ import com.kdp.fretquiz.game.ImmutableGame;
 import com.kdp.fretquiz.user.User;
 import org.immutables.value.Value;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 public abstract class Game
 {
     public abstract Long id();
+    public abstract Instant createdAt();
     public abstract Status status();
     public abstract Opts opts();
     public abstract Long hostId();

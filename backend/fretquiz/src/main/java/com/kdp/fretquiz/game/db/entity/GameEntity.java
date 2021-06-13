@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class GameEntity
 {
     @Id
     public final Long id;
+    public final Date createdAt;
     public final Game.Status status;
     public final Long host;
 
@@ -30,6 +33,7 @@ public class GameEntity
     public final List<RoundEntity> rounds;
 
     public GameEntity(Long id,
+                      Date createdAt,
                       Game.Status status,
                       OptsEntity opts,
                       Long host,
@@ -37,6 +41,7 @@ public class GameEntity
                       List<RoundEntity> rounds)
     {
         this.id = id;
+        this.createdAt = createdAt;
         this.status = status;
         this.opts = opts;
         this.host = host;
@@ -48,6 +53,7 @@ public class GameEntity
     {
         return new GameEntity(
                 null,
+                new Date(),
                 Game.Status.INIT,
                 OptsEntity.DEFAULT,
                 host.id(),
@@ -67,6 +73,7 @@ public class GameEntity
 
         return new GameEntity(
                 game.id(),
+                Date.from(game.createdAt()),
                 game.status(),
                 OptsEntity.from(game.opts()),
                 game.hostId(),
@@ -82,6 +89,7 @@ public class GameEntity
 
         return ImmutableGame.builder()
                 .id(id)
+                .createdAt(createdAt.toInstant())
                 .status(status)
                 .opts(opts.toOpts())
                 .hostId(host)

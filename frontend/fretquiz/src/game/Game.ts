@@ -28,6 +28,7 @@ export interface Round {
 
 export interface Game {
   id: number;
+  createdAt: number;
   status: Status;
   opts: Opts;
   hostId: number;
