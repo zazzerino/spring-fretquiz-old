@@ -1,0 +1,10 @@
+.GamesTable table {
+  margin: auto;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.GamesTable table td {
+  padding: 0.5rem;
+  text-align: left;
+}

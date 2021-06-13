@@ -1,7 +1,8 @@
 import { store } from "../app/store";
+import { setGame, setGames } from "../game/gameSlice";
 import { setUser } from "../user/userSlice";
 import { createGame, login, Message } from "./message";
-import { Response, ResponseType, LoginResponse } from "./response";
+import { Response, LoginResponse, GameResponse, GamesResponse } from "./response";
 
 const WS_URL = 'ws://localhost:8080/ws';
 
@@ -40,6 +41,8 @@ function onMessage(event: MessageEvent) {
 
   switch (response.type) {
     case 'LOGIN': return handleLogin(response as LoginResponse);
+    case 'GAMES': return handleGames(response as GamesResponse);
+    case 'GAME': return handleGame(response as GameResponse);
   }
 }
 
@@ -51,6 +54,14 @@ function handleLogin(response: LoginResponse) {
   store.dispatch(setUser(response.user));
 }
 
+function handleGames(response: GamesResponse) {
+  store.dispatch(setGames(response.games));
+}
+
 export function sendCreateGame() {
   send(createGame());
+}
+
+function handleGame(response: GameResponse) {
+  store.dispatch(setGame(response.game));
 }

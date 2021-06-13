@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../app/store";
 import { Game } from "./Game";
 
 interface GameState {
@@ -22,6 +23,10 @@ const gameSlice = createSlice({
     },
   }
 });
+
+export const selectGames = (state: RootState) => state.game.games;
+
+export const selectGame = (state: RootState) => state.game.game;
 
 export const { setGames, setGame } = gameSlice.actions;
 

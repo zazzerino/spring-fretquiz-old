@@ -67,7 +67,7 @@ public class GameService
         return entity.toGameWith(users);
     }
 
-    public void handleSessionClosed(User user)
+    public void removeFromCurrentGame(User user)
     {
         getGameByUserId(user.id())
                 .map(game -> game.removeUser(user))
