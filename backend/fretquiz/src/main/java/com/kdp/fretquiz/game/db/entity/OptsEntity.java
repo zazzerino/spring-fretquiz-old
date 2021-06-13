@@ -4,7 +4,6 @@ import com.kdp.fretquiz.game.ImmutableOpts;
 import com.kdp.fretquiz.game.Opts;
 import com.kdp.fretquiz.theory.Accidental;
 import com.kdp.fretquiz.theory.Fretboard;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
@@ -13,8 +12,6 @@ import java.util.Objects;
 @Table("opts")
 public class OptsEntity
 {
-    @Id
-    public final Long id;
     public final int roundCount;
     public final int startFret;
     public final int endFret;
@@ -22,15 +19,13 @@ public class OptsEntity
     public final List<Integer> strings;
     public final List<String> accidentals;
 
-    public OptsEntity(Long id,
-                      int roundCount,
+    public OptsEntity(int roundCount,
                       int startFret,
                       int endFret,
                       List<String> tuning,
                       List<Integer> strings,
                       List<String> accidentals)
     {
-        this.id = id;
         this.roundCount = roundCount;
         this.startFret = startFret;
         this.endFret = endFret;
@@ -40,7 +35,6 @@ public class OptsEntity
     }
 
     public static OptsEntity DEFAULT = new OptsEntity(
-            null,
             3,
             0,
             4,
@@ -57,7 +51,6 @@ public class OptsEntity
                 .toList();
 
         return new OptsEntity(
-                null,
                 opts.roundCount(),
                 opts.fretboard().startFret(),
                 opts.fretboard().endFret(),
@@ -90,7 +83,6 @@ public class OptsEntity
         return roundCount == that.roundCount
                 && startFret == that.startFret
                 && endFret == that.endFret
-                && Objects.equals(id, that.id)
                 && Objects.equals(tuning, that.tuning)
                 && Objects.equals(strings, that.strings)
                 && Objects.equals(accidentals, that.accidentals);
@@ -99,14 +91,13 @@ public class OptsEntity
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, roundCount, startFret, endFret, tuning, strings, accidentals);
+        return Objects.hash(roundCount, startFret, endFret, tuning, strings, accidentals);
     }
 
     @Override
     public String toString()
     {
         return "OptsEntity{" +
-                "id=" + id +
                 ", roundCount=" + roundCount +
                 ", startFret=" + startFret +
                 ", endFret=" + endFret +

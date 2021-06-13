@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class Sessions
+public class SessionHandler
 {
-    private final Logger log = LoggerFactory.getLogger(Sessions.class);
+    private final Logger log = LoggerFactory.getLogger(SessionHandler.class);
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     public void add(WebSocketSession session)

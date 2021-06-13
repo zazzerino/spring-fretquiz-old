@@ -18,11 +18,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class WebSocketHandler extends TextWebSocketHandler
 {
     private final Logger log = LoggerFactory.getLogger(WebSocketHandler.class);
-    private final Sessions sessions;
+    private final SessionHandler sessions;
     private final UserController userController;
     private final GameController gameController;
 
-    public WebSocketHandler(Sessions sessions, UserController userController, GameController gameController)
+    public WebSocketHandler(SessionHandler sessions,
+                            UserController userController,
+                            GameController gameController)
     {
         this.sessions = sessions;
         this.userController = userController;
@@ -39,6 +41,15 @@ public class WebSocketHandler extends TextWebSocketHandler
     }
 
     @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)
+    {
+        log.info("connection closed: " + session.getId());
+        sessions.remove(session);
+        gameController.userLeft(session);
+        userController.delete(session);
+    }
+
+    @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage text) throws Exception
     {
         final var message = decode(text.getPayload());
@@ -49,15 +60,6 @@ public class WebSocketHandler extends TextWebSocketHandler
         } else if (message instanceof CreateGameMessage) {
             gameController.createGame(session);
         }
-    }
-
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)
-    {
-        log.info("connection closed: " + session.getId());
-        sessions.remove(session);
-        gameController.userLeft(session);
-        userController.delete(session);
     }
 
     public Message decode(String json) throws JsonProcessingException

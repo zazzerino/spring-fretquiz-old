@@ -70,8 +70,8 @@ public class GameService
     public void removeFromCurrentGame(User user)
     {
         getGameByUserId(user.id())
-                .map(game -> game.removeUser(user))
-                .ifPresent(game -> {
+                .ifPresent(g -> {
+                    final var game = g.removeUser(user);
                     final var entity = GameEntity.from(game);
                     gameRepository.save(entity);
                 });

@@ -38,7 +38,6 @@ class GameRepositoryTest
         assertTrue(gameRepository.findAll().isEmpty());
 
         final var opts = new OptsEntity(
-                null,
                 5,
                 0,
                 4,
@@ -83,7 +82,6 @@ class GameRepositoryTest
         user1 = userRepository.save(user1);
 
         final var opts = new OptsEntity(
-                null,
                 5,
                 0,
                 4,

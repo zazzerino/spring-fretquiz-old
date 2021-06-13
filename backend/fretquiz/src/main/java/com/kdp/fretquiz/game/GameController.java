@@ -1,7 +1,7 @@
 package com.kdp.fretquiz.game;
 
 import com.kdp.fretquiz.user.UserService;
-import com.kdp.fretquiz.websocket.Sessions;
+import com.kdp.fretquiz.websocket.SessionHandler;
 import com.kdp.fretquiz.websocket.response.GameResponse;
 import com.kdp.fretquiz.websocket.response.GamesResponse;
 import org.slf4j.Logger;
@@ -13,11 +13,11 @@ import org.springframework.web.socket.WebSocketSession;
 public class GameController
 {
     private final Logger log = LoggerFactory.getLogger(GameController.class);
-    private final Sessions sessions;
+    private final SessionHandler sessions;
     private final GameService gameService;
     private final UserService userService;
 
-    public GameController(Sessions sessions, GameService gameService, UserService userService)
+    public GameController(SessionHandler sessions, GameService gameService, UserService userService)
     {
         this.sessions = sessions;
         this.gameService = gameService;
@@ -55,9 +55,9 @@ public class GameController
     {
         final var user = userService.getBySessionId(session.getId());
         final var game = gameService.getGameByUserId(user.id());
-        log.info("user left: " + user);
 
         game.ifPresent(g -> {
+            log.info("removing user " + user + " from game");
             gameService.removeFromCurrentGame(user);
             broadcastGames();
         });

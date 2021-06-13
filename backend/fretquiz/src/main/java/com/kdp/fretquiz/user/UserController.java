@@ -1,6 +1,6 @@
 package com.kdp.fretquiz.user;
 
-import com.kdp.fretquiz.websocket.Sessions;
+import com.kdp.fretquiz.websocket.SessionHandler;
 import com.kdp.fretquiz.websocket.message.LoginMessage;
 import com.kdp.fretquiz.websocket.response.LoginResponse;
 import org.slf4j.Logger;
@@ -12,10 +12,10 @@ import org.springframework.web.socket.WebSocketSession;
 public class UserController
 {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final Sessions sessions;
+    private final SessionHandler sessions;
     private final UserService userService;
 
-    public UserController(Sessions sessions, UserService userService)
+    public UserController(SessionHandler sessions, UserService userService)
     {
         this.sessions = sessions;
         this.userService = userService;
