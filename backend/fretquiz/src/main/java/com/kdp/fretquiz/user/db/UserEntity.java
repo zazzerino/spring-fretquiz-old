@@ -22,7 +22,7 @@ public class UserEntity
         this.name = name;
     }
 
-    public static UserEntity create(String sessionId)
+    public static UserEntity createWith(String sessionId)
     {
         return new UserEntity(null, sessionId, User.DEFAULT_NAME);
     }

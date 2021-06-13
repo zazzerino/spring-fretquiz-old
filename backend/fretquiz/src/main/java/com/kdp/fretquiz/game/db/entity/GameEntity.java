@@ -37,7 +37,7 @@ public class GameEntity
         this.rounds = rounds;
     }
 
-    public static GameEntity create(User host)
+    public static GameEntity createWith(User host)
     {
         return new GameEntity(
                 null,
@@ -67,7 +67,7 @@ public class GameEntity
                 rounds);
     }
 
-    public Game toGame(List<User> users)
+    public Game toGameWith(List<User> users)
     {
         final var rounds = this.rounds.stream()
                 .map(RoundEntity::toRound)

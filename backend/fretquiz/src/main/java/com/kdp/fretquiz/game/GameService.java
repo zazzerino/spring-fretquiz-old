@@ -6,6 +6,8 @@ import com.kdp.fretquiz.user.User;
 import com.kdp.fretquiz.user.db.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GameService
 {
@@ -16,10 +18,25 @@ public class GameService
         this.gameRepository = gameRepository;
     }
 
-    public Game create(User host)
+    public Optional<Game> getById(Long gameId)
     {
-        final var entity = gameRepository
-                .save(GameEntity.create(host));
+        final var users = gameRepository
+                .findUsers(gameId)
+                .stream()
+                .map(UserEntity::toUser)
+                .toList();
+
+        final var entity = gameRepository.findById(gameId);
+
+        return entity.isEmpty()
+                ? Optional.empty()
+                : Optional.of(entity.get().toGameWith(users));
+    }
+
+    public Game createWith(User host)
+    {
+        final var entity = gameRepository.save(
+                GameEntity.createWith(host));
 
         final var users = gameRepository
                 .findUsers(entity.id)
@@ -27,6 +44,6 @@ public class GameService
                 .map(UserEntity::toUser)
                 .toList();
 
-        return entity.toGame(users);
+        return entity.toGameWith(users);
     }
 }

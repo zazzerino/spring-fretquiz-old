@@ -54,7 +54,7 @@ public class UserController
     private void handleSessionDisconnect(SessionDisconnectEvent event)
     {
         log.info("session disconnect: " + event.getSessionId());
-        userService.delete(event.getSessionId());
+        userService.sessionClosed(event.getSessionId());
     }
 
     public void sendToSessionId(String sessionId,

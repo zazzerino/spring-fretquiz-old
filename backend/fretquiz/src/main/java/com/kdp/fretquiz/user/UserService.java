@@ -18,7 +18,7 @@ public class UserService
     public User createAnonymous(String sessionId)
     {
         final var entity = userRepository.save(
-                UserEntity.create(sessionId));
+                UserEntity.createWith(sessionId));
 
         return entity.toUser();
     }
@@ -36,7 +36,7 @@ public class UserService
         return user;
     }
 
-    public void delete(String sessionId)
+    public void sessionClosed(String sessionId)
     {
         final var entity = userRepository
                 .findBySessionId(sessionId)

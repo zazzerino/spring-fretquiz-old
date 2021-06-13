@@ -27,7 +27,7 @@ public class GameController
     public GameResponse createGame(@Header("simpSessionId") String sessionId)
     {
         final var user = userService.getBySessionId(sessionId);
-        final var game = gameService.create(user);
+        final var game = gameService.createWith(user);
         log.info("game created: " + game);
 
         return new GameResponse(game);

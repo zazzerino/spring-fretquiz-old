@@ -26,4 +26,21 @@ public abstract class Game
         ROUND_OVER,
         GAME_OVER
     }
+
+    public Game addUser(User user)
+    {
+        return ImmutableGame.copyOf(this)
+                .addUser(user);
+    }
+
+    public Game removeUser(User user)
+    {
+        final var status = users().size() == 1
+                ? Status.GAME_OVER
+                : status();
+
+        return ImmutableGame.copyOf(this)
+                .withStatus(status)
+                .removeUser(user);
+    }
 }

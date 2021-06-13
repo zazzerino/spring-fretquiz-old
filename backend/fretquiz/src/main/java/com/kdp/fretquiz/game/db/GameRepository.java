@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameRepository extends CrudRepository<GameEntity, Long>
 {
@@ -16,6 +17,12 @@ public interface GameRepository extends CrudRepository<GameEntity, Long>
     @Query("""
             SELECT "user".* FROM "user"
             LEFT JOIN game_user ON "user".id = game_user.user
-            WHERE game_user.game_entity = :gameId""")
+            WHERE game_user.game_entity = :gameId
+            """)
     List<UserEntity> findUsers(@Param("gameId") Long gameId);
+
+//    @Query("""
+//            SELECT "game".* FROM
+//            """)
+//    Optional<GameEntity> findUserGame(Long userId);
 }
