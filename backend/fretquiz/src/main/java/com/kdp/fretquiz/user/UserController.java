@@ -1,6 +1,7 @@
 package com.kdp.fretquiz.user;
 
-import com.kdp.fretquiz.websocket.SessionHandler;
+import com.kdp.fretquiz.websocket.Sessions;
+import com.kdp.fretquiz.websocket.message.LoginMessage;
 import com.kdp.fretquiz.websocket.response.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +12,12 @@ import org.springframework.web.socket.WebSocketSession;
 public class UserController
 {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final SessionHandler sessionHandler;
+    private final Sessions sessions;
     private final UserService userService;
 
-    public UserController(SessionHandler sessionHandler, UserService userService)
+    public UserController(Sessions sessions, UserService userService)
     {
-        this.sessionHandler = sessionHandler;
+        this.sessions = sessions;
         this.userService = userService;
     }
 
@@ -26,41 +27,24 @@ public class UserController
         log.info("new user: " + user);
 
         final var response = new LoginResponse(user);
-        sessionHandler.sendTo(session, response);
+        sessions.sendTo(session, response);
     }
 
-    //    private final UserService userService;
-//    private final GameService gameService;
-//    private final SimpMessagingTemplate messagingTemplate;
-//
-//    public UserController(UserService userService, GameService gameService, SimpMessagingTemplate messagingTemplate)
-//    {
-//        this.userService = userService;
-//        this.gameService = gameService;
-//        this.messagingTemplate = messagingTemplate;
-//    }
-//
-//    @MessageMapping("/user/connect")
-//    @SendToUser("/topic/user")
-//    public void connect(@Header("simpSessionId") String sessionId)
-//    {
-////        final var user = userService.createAnonymous(sessionId);
-////        log.info("new user: " + user);
-////
-////        return new LoginResponse(user);
-//    }
-//
-//    @MessageMapping("/user/login")
-//    @SendToUser("/topic/user")
-//    public LoginResponse login(@Header("simpSessionId") String sessionId,
-//                               @Payload LoginMessage message)
-//    {
-//        final var user = userService.updateName(sessionId, message.name());
-//        log.info("user updated: " + user);
-//
-//        return new LoginResponse(user);
-//    }
-//
+    public void login(WebSocketSession session, LoginMessage message)
+    {
+        final var user = userService.updateName(session.getId(), message.name());
+        log.info("user updated: " + user);
+
+        final var response = new LoginResponse(user);
+        sessions.sendTo(session, response);
+    }
+
+    public void sessionClosed(WebSocketSession session)
+    {
+        final var user = userService.delete(session.getId());
+        log.info("user deleted: " + user);
+    }
+
 //    @EventListener
 //    private void handleSessionConnected(SessionConnectedEvent event)
 //    {

@@ -1,6 +1,6 @@
 import { store } from "../app/store";
 import { setUser } from "../user/userSlice";
-import { login, Message } from "./message";
+import { createGame, login, Message } from "./message";
 import { Response, ResponseType, LoginResponse } from "./response";
 
 const WS_URL = 'ws://localhost:8080/ws';
@@ -17,7 +17,7 @@ export function initWebSocket() {
   socket.onmessage = onMessage;
 }
 
-export function send(message: Message) {
+function send(message: Message) {
   socket.send(JSON.stringify(message));
 }
 
@@ -49,4 +49,8 @@ export function sendLogin(name: string) {
 
 function handleLogin(response: LoginResponse) {
   store.dispatch(setUser(response.user));
+}
+
+export function sendCreateGame() {
+  send(createGame());
 }

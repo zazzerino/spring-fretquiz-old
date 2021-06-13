@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kdp.fretquiz.user.UserController;
-import com.kdp.fretquiz.websocket.message.LoginMessage;
-import com.kdp.fretquiz.websocket.message.Message;
-import com.kdp.fretquiz.websocket.message.MessageType;
+import com.kdp.fretquiz.websocket.message.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,16 +14,16 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
-public class MessageHandler extends TextWebSocketHandler
+public class WebSocketHandler extends TextWebSocketHandler
 {
-    private final Logger log = LoggerFactory.getLogger(MessageHandler.class);
+    private final Logger log = LoggerFactory.getLogger(WebSocketHandler.class);
     private final ObjectMapper mapper = new ObjectMapper();
-    private final SessionHandler sessionHandler;
+    private final Sessions sessions;
     private final UserController userController;
 
-    public MessageHandler(SessionHandler sessionHandler, UserController userController)
+    public WebSocketHandler(Sessions sessions, UserController userController)
     {
-        this.sessionHandler = sessionHandler;
+        this.sessions = sessions;
         this.userController = userController;
     }
 
@@ -33,7 +31,7 @@ public class MessageHandler extends TextWebSocketHandler
     public void afterConnectionEstablished(WebSocketSession session)
     {
         log.info("connection established: " + session.getId());
-        sessionHandler.add(session);
+        sessions.add(session);
         userController.connect(session);
     }
 
@@ -43,18 +41,20 @@ public class MessageHandler extends TextWebSocketHandler
         final var message = decode(text.getPayload());
         log.info("message received: " + message);
 
-//        if (message instanceof LoginMessage) {
-//        }
+        if (message instanceof LoginMessage lm) {
+            userController.login(session, lm);
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status)
     {
         log.info("connection closed: " + session.getId());
-        sessionHandler.remove(session);
+        sessions.remove(session);
+        userController.sessionClosed(session);
     }
 
-    private Message decode(String json) throws JsonProcessingException
+    public Message decode(String json) throws JsonProcessingException
     {
         final var message = mapper.readValue(json, ObjectNode.class);
 
@@ -62,9 +62,14 @@ public class MessageHandler extends TextWebSocketHandler
                 message.get("type").asText());
 
         return switch (messageType) {
-            case LOGIN -> new LoginMessage(message.get("name").asText());
-            case CREATE_GAME -> null;
-            case JOIN_GAME -> null;
+            case LOGIN -> new LoginMessage(
+                    message.get("name").asText());
+
+            case CREATE_GAME -> new CreateGameMessage();
+
+            case JOIN_GAME -> new JoinGameMessage(
+                    message.get("gameId").asLong(),
+                    message.get("userId").asLong());
         };
     }
 }

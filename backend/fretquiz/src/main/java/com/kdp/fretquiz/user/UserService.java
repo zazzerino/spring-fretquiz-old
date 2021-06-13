@@ -39,7 +39,7 @@ public class UserService
         return user;
     }
 
-    public User handleSessionClosed(String sessionId)
+    public User delete(String sessionId)
     {
         final var entity = userRepository
                 .findBySessionId(sessionId)

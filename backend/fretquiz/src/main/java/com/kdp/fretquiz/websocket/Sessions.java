@@ -13,11 +13,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class SessionHandler
+public class Sessions
 {
-    private final Logger log = LoggerFactory.getLogger(SessionHandler.class);
-    private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final Logger log = LoggerFactory.getLogger(Sessions.class);
     private final ObjectMapper mapper = new ObjectMapper();
+    private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     public void add(WebSocketSession session)
     {
