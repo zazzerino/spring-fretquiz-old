@@ -1,17 +1,19 @@
-import { createGame, login } from './message';
-import { client } from './socket';
+export const foo = 42;
 
-function send(destination: string, body: Object) {
-  client.publish({
-    destination,
-    body: JSON.stringify(body),
-  });
-}
+// import { createGame, login } from './message';
+// import { client } from './socket';
 
-export function sendLogin(name: string) {
-  send('/app/user/login', login(name));
-}
+// function send(destination: string, body: Object) {
+//   client.publish({
+//     destination,
+//     body: JSON.stringify(body),
+//   });
+// }
 
-export function sendCreateGame() {
-  send('/app/game/create', createGame());
-}
+// export function sendLogin(name: string) {
+//   send('/app/user/login', login(name));
+// }
+
+// export function sendCreateGame() {
+//   send('/app/game/create', createGame());
+// }

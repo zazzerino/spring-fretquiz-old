@@ -1,5 +1,5 @@
 import React from 'react';
-import { sendLogin } from '../websocket/senders';
+// import { sendLogin } from '../websocket/senders';
 // import './Login.css';
 
 export function Login() {
@@ -14,7 +14,8 @@ export function Login() {
         onChange={event => setName(event.target.value)}
       />
       <br />
-      <button onClick={() => sendLogin(name)}>
+      {/* <button onClick={() => sendLogin(name)}> */}
+      <button>
         Login
       </button>
     </div>

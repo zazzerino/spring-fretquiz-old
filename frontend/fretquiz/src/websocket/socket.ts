@@ -1,38 +1,31 @@
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
-import { gameCallback, userCallback } from './handlers';
-import { Response } from './response';
+import { Message } from "./message";
 
-export const client = new Client({ webSocketFactory });
+const WS_URL = 'ws://localhost:8080/ws';
 
-export function connect() {
-  client.activate();
+let socket: WebSocket;
+
+export function initWebSocket() {
+  socket = new WebSocket(WS_URL);
+
+  socket.onopen = onOpen;
+  socket.onclose = onClose;
+  socket.onclose = onClose;
+  socket.onerror = onError;
+  // socket.onmessage = onMessage;
 }
 
-const WEBSOCKET_URL = 'http://localhost:8080/ws';
-
-function webSocketFactory() {
-  return new SockJS(WEBSOCKET_URL);
+export function send(message: Message) {
+  socket.send(JSON.stringify(message));
 }
 
-client.onConnect = _frame => {
-  client.subscribe('/user/topic/user', msg => {
-    userCallback(JSON.parse(msg.body) as Response);
-  });
+function onOpen() {
+  console.log('websocket connection established');
+}
 
-  // client.subscribe('/topic/user', msg => {
-  //   userCallback(JSON.parse(msg.body) as Response);
-  // });
+function onClose() {
+  console.log('websocket connection closed');
+}
 
-  client.subscribe('/user/topic/game', msg => {
-    gameCallback(JSON.parse(msg.body) as Response);
-  });
-
-  client.subscribe('/topic/game', msg => {
-    gameCallback(JSON.parse(msg.body) as Response);
-  });
-
-  client.publish({
-    destination: '/app/user/connect'
-  });
+function onError(event: Event) {
+  console.error('WEBSOCKET ERROR: ' + JSON.stringify(event));
 }

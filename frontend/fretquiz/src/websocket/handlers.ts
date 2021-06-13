@@ -1,30 +1,32 @@
-import { store } from '../app/store';
-import { setGame } from '../game/gameSlice';
-import { setUser } from '../user/userSlice';
-import { LoginResponse, Response, GameResponse } from './response';
+export const foo = 42;
 
-export function userCallback(response: Response) {
-  console.log('/user/topic/user')
-  console.log(response);
+// import { store } from '../app/store';
+// import { setGame } from '../game/gameSlice';
+// import { setUser } from '../user/userSlice';
+// import { LoginResponse, Response, GameResponse } from './response';
 
-  switch (response.type) {
-    case 'LOGIN': return handleLogin(response as LoginResponse);
-  }
-}
+// export function userCallback(response: Response) {
+//   console.log('/user/topic/user')
+//   console.log(response);
 
-function handleLogin(response: LoginResponse) {
-  store.dispatch(setUser(response.user));
-}
+//   switch (response.type) {
+//     case 'LOGIN': return handleLogin(response as LoginResponse);
+//   }
+// }
 
-export function gameCallback(response: Response) {
-  console.log('/user/topic/game');
-  console.log(response);
+// function handleLogin(response: LoginResponse) {
+//   store.dispatch(setUser(response.user));
+// }
 
-  switch (response.type) {
-    case 'GAME': return handleGame(response as GameResponse);
-  }
-}
+// export function gameCallback(response: Response) {
+//   console.log('/user/topic/game');
+//   console.log(response);
 
-function handleGame(response: GameResponse) {
-  store.dispatch(setGame(response.game));
-}
+//   switch (response.type) {
+//     case 'GAME': return handleGame(response as GameResponse);
+//   }
+// }
+
+// function handleGame(response: GameResponse) {
+//   store.dispatch(setGame(response.game));
+// }

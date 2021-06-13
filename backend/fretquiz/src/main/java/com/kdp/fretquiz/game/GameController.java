@@ -14,31 +14,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GameController
 {
-    private final Logger log = LoggerFactory.getLogger(GameController.class);
-    private final UserService userService;
-    private final GameService gameService;
-
-    public GameController(UserService userService, GameService gameService)
-    {
-        this.userService = userService;
-        this.gameService = gameService;
-    }
-
-    @MessageMapping("/game/create")
-    @SendToUser("/topic/game")
-    public GameResponse createGame(@Header("simpSessionId") String sessionId)
-    {
-        final var user = userService.getBySessionId(sessionId);
-        final var game = gameService.createWith(user);
-        log.info("game created: " + game);
-
-        return new GameResponse(game);
-    }
-
-    @SendTo("/topic/game")
-    public GamesResponse sendAllGames()
-    {
-        final var games = gameService.getAllGames();
-        return new GamesResponse(games);
-    }
+//    private final Logger log = LoggerFactory.getLogger(GameController.class);
+//    private final UserService userService;
+//    private final GameService gameService;
+//
+//    public GameController(UserService userService, GameService gameService)
+//    {
+//        this.userService = userService;
+//        this.gameService = gameService;
+//    }
+//
+//    @MessageMapping("/game/create")
+//    @SendToUser("/topic/game")
+//    public GameResponse createGame(@Header("simpSessionId") String sessionId)
+//    {
+//        final var user = userService.getBySessionId(sessionId);
+//        final var game = gameService.createWith(user);
+//        log.info("game created: " + game);
+//
+//        return new GameResponse(game);
+//    }
+//
+//    @SendTo("/topic/game")
+//    public GamesResponse sendAllGames()
+//    {
+//        final var games = gameService.getAllGames();
+//        return new GamesResponse(games);
+//    }
 }
