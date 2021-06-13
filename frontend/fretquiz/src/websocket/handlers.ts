@@ -14,3 +14,8 @@ export function userCallback(response: Response) {
 function handleLogin(response: Login) {
   store.dispatch(setUser(response.user));
 }
+
+export function gameCallback(response: Response) {
+  console.log('/user/topic/game');
+  console.log(response);
+}

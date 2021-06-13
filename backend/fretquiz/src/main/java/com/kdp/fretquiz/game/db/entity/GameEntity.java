@@ -8,8 +8,8 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table("game")
 public class GameEntity
@@ -37,6 +37,36 @@ public class GameEntity
         this.rounds = rounds;
     }
 
+    public static GameEntity create(User host)
+    {
+        return new GameEntity(
+                null,
+                Game.Status.INIT,
+                OptsEntity.DEFAULT,
+                host.id(),
+                Set.of(new UserRef(host.id())),
+                List.of());
+    }
+
+    public static GameEntity from(Game game)
+    {
+        final var users = game.users().stream()
+                .map(u -> new UserRef(u.id()))
+                .collect(Collectors.toSet());
+
+        final var rounds = game.rounds().stream()
+                .map(RoundEntity::from)
+                .toList();
+
+        return new GameEntity(
+                game.id(),
+                game.status(),
+                OptsEntity.from(game.opts()),
+                game.hostId(),
+                users,
+                rounds);
+    }
+
     public Game toGame(List<User> users)
     {
         final var rounds = this.rounds.stream()
@@ -44,7 +74,7 @@ public class GameEntity
                 .toList();
 
         return ImmutableGame.builder()
-                .id(Optional.ofNullable(id))
+                .id(id)
                 .status(status)
                 .opts(opts.toOpts())
                 .hostId(host)

@@ -22,6 +22,18 @@ public class RoundEntity
         this.guesses = guesses;
     }
 
+    public static RoundEntity from(Round round)
+    {
+        final var guesses = round.guesses().stream()
+                .map(GuessEntity::from)
+                .toList();
+
+        return new RoundEntity(
+                round.noteToGuess().name(),
+                round.isOver(),
+                guesses);
+    }
+
     public Round toRound()
     {
         final var guesses = this.guesses.stream()

@@ -18,6 +18,11 @@ public class GuessEntity
         this.isCorrect = isCorrect;
     }
 
+    public static GuessEntity from(Guess guess)
+    {
+        return new GuessEntity(guess.userId(), guess.isCorrect());
+    }
+
     public Guess toGuess()
     {
         return ImmutableGuess.builder()

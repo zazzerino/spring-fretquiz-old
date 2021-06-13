@@ -9,6 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table("opts")
 public class OptsEntity
@@ -37,6 +38,33 @@ public class OptsEntity
         this.tuning = tuning;
         this.strings = strings;
         this.accidentals = accidentals;
+    }
+
+    public static OptsEntity DEFAULT = new OptsEntity(
+            null,
+            3,
+            0,
+            4,
+            Fretboard.DEFAULT_TUNING,
+            List.of(1, 2, 3, 4, 5, 6),
+            List.of(Accidental.FLAT.toString(),
+                    Accidental.NONE.toString(),
+                    Accidental.SHARP.toString()));
+
+    public static OptsEntity from(Opts opts)
+    {
+        final var accidentals = opts.accidentals().stream()
+                .map(Enum::toString)
+                .toList();
+
+        return new OptsEntity(
+                null,
+                opts.roundCount(),
+                opts.fretboard().startFret(),
+                opts.fretboard().endFret(),
+                opts.fretboard().tuning(),
+                List.copyOf(opts.strings()),
+                accidentals);
     }
 
     public Opts toOpts()

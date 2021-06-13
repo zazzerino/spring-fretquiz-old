@@ -1,6 +1,6 @@
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { userCallback } from './handlers';
+import { gameCallback, userCallback } from './handlers';
 import { Response } from './response';
 
 export const client = new Client({ webSocketFactory });
@@ -21,7 +21,7 @@ client.onConnect = _frame => {
   });
 
   client.subscribe('/user/topic/game', msg => {
-
+    gameCallback(JSON.parse(msg.body) as Response);
   });
 
   client.publish({

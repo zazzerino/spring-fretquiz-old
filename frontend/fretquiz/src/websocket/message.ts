@@ -18,3 +18,11 @@ export function login(name: string): Login {
     name,
   }
 }
+
+export interface CreateGame extends Message {
+  type: 'CREATE_GAME';
+}
+
+export function createGame(): CreateGame {
+  return { type: 'CREATE_GAME' }
+}

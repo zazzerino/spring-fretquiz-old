@@ -44,4 +44,11 @@ public class UserService
 
         userRepository.delete(entity);
     }
+
+    public User getBySessionId(String sessionId)
+    {
+        return userRepository.findBySessionId(sessionId)
+                .orElseThrow()
+                .toUser();
+    }
 }
