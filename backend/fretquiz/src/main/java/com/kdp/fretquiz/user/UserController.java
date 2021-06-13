@@ -1,5 +1,6 @@
 package com.kdp.fretquiz.user;
 
+import com.kdp.fretquiz.game.GameService;
 import com.kdp.fretquiz.websocket.message.LoginMessage;
 import com.kdp.fretquiz.websocket.response.LoginResponse;
 import org.slf4j.Logger;
@@ -21,11 +22,13 @@ public class UserController
 {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final GameService gameService;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public UserController(UserService userService, SimpMessagingTemplate messagingTemplate)
+    public UserController(UserService userService, GameService gameService, SimpMessagingTemplate messagingTemplate)
     {
         this.userService = userService;
+        this.gameService = gameService;
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -54,7 +57,8 @@ public class UserController
     private void handleSessionDisconnect(SessionDisconnectEvent event)
     {
         log.info("session disconnect: " + event.getSessionId());
-        userService.sessionClosed(event.getSessionId());
+        final var user = userService.sessionClosed(event.getSessionId());
+        gameService.sessionClosed(user);
     }
 
     public void sendToSessionId(String sessionId,

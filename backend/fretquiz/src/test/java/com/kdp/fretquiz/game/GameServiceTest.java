@@ -42,4 +42,16 @@ class GameServiceTest
 
         assertEquals(game, foundGame);
     }
+
+    @Test
+    void getByUserId()
+    {
+        final var user = userService.createAnonymous("s0");
+        final var game = gameService.createWith(user);
+
+        final var foundGame = gameService.getByUserId(user.id())
+                .orElseThrow();
+
+        log.info(foundGame.toString());
+    }
 }

@@ -5,6 +5,7 @@ import com.kdp.fretquiz.game.ImmutableGame;
 import com.kdp.fretquiz.user.User;
 import org.immutables.value.Value;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,18 +30,24 @@ public abstract class Game
 
     public Game addUser(User user)
     {
+        final var users = new HashSet<>(users());
+        users.add(user);
+
         return ImmutableGame.copyOf(this)
-                .addUser(user);
+                .withUsers(users);
     }
 
     public Game removeUser(User user)
     {
-        final var status = users().size() == 1
+        final var users = new HashSet<>(users());
+        users.remove(user);
+
+        final var status = users.isEmpty()
                 ? Status.GAME_OVER
                 : status();
 
         return ImmutableGame.copyOf(this)
                 .withStatus(status)
-                .removeUser(user);
+                .withUsers(users);
     }
 }

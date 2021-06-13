@@ -1,5 +1,6 @@
 package com.kdp.fretquiz.game;
 
+import com.kdp.fretquiz.game.ImmutableGame;
 import com.kdp.fretquiz.game.db.GameRepository;
 import com.kdp.fretquiz.game.db.entity.GameEntity;
 import com.kdp.fretquiz.user.User;
@@ -33,6 +34,15 @@ public class GameService
                 : Optional.of(entity.get().toGameWith(users));
     }
 
+    public Optional<Game> getByUserId(Long userId)
+    {
+        final var gameId = gameRepository.findGameId(userId);
+
+        return gameId.isEmpty()
+                ? Optional.empty()
+                : getById(gameId.get());
+    }
+
     public Game createWith(User host)
     {
         final var entity = gameRepository.save(
@@ -45,5 +55,18 @@ public class GameService
                 .toList();
 
         return entity.toGameWith(users);
+    }
+
+    public Optional<Game> sessionClosed(User user)
+    {
+        final var game = getByUserId(user.id())
+                .map(g -> g.removeUser(user));
+
+        if (game.isPresent()) {
+            final var entity = GameEntity.from(game.get());
+            gameRepository.save(entity);
+        }
+
+        return game;
     }
 }
