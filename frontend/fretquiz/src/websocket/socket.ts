@@ -1,4 +1,4 @@
-import { Message } from "./message";
+import { login, Message } from "./message";
 
 const WS_URL = 'ws://localhost:8080/ws';
 
@@ -11,7 +11,7 @@ export function initWebSocket() {
   socket.onclose = onClose;
   socket.onclose = onClose;
   socket.onerror = onError;
-  // socket.onmessage = onMessage;
+  socket.onmessage = onMessage;
 }
 
 export function send(message: Message) {
@@ -28,4 +28,14 @@ function onClose() {
 
 function onError(event: Event) {
   console.error('WEBSOCKET ERROR: ' + JSON.stringify(event));
+}
+
+function onMessage(event: MessageEvent) {
+  const response = JSON.parse(event.data) as Response;
+  console.log("message received:")
+  console.log(response);
+}
+
+export function sendLogin(name: string) {
+  send(login(name));
 }
