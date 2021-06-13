@@ -7,22 +7,22 @@ export interface Message {
   type: MessageType;
 }
 
-export interface Login extends Message {
+export interface LoginMessage extends Message {
   type: 'LOGIN';
   name: string;
 }
 
-export function login(name: string): Login {
+export function login(name: string): LoginMessage {
   return {
     type: 'LOGIN',
     name,
   }
 }
 
-export interface CreateGame extends Message {
+export interface CreateGameMessage extends Message {
   type: 'CREATE_GAME';
 }
 
-export function createGame(): CreateGame {
+export function createGame(): CreateGameMessage {
   return { type: 'CREATE_GAME' }
 }

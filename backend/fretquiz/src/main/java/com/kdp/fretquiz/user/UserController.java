@@ -1,28 +1,35 @@
 package com.kdp.fretquiz.user;
 
-import com.kdp.fretquiz.game.GameService;
-import com.kdp.fretquiz.websocket.message.LoginMessage;
+import com.kdp.fretquiz.websocket.SessionHandler;
 import com.kdp.fretquiz.websocket.response.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-
-import java.util.List;
+import org.springframework.web.socket.WebSocketSession;
 
 @Controller
 public class UserController
 {
-//    private final Logger log = LoggerFactory.getLogger(UserController.class);
-//    private final UserService userService;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final SessionHandler sessionHandler;
+    private final UserService userService;
+
+    public UserController(SessionHandler sessionHandler, UserService userService)
+    {
+        this.sessionHandler = sessionHandler;
+        this.userService = userService;
+    }
+
+    public void connect(WebSocketSession session)
+    {
+        final var user = userService.createAnonymous(session.getId());
+        log.info("new user: " + user);
+
+        final var response = new LoginResponse(user);
+        sessionHandler.sendTo(session, response);
+    }
+
+    //    private final UserService userService;
 //    private final GameService gameService;
 //    private final SimpMessagingTemplate messagingTemplate;
 //

@@ -1,4 +1,7 @@
+import { store } from "../app/store";
+import { setUser } from "../user/userSlice";
 import { login, Message } from "./message";
+import { Response, ResponseType, LoginResponse } from "./response";
 
 const WS_URL = 'ws://localhost:8080/ws';
 
@@ -34,8 +37,16 @@ function onMessage(event: MessageEvent) {
   const response = JSON.parse(event.data) as Response;
   console.log("message received:")
   console.log(response);
+
+  switch (response.type) {
+    case 'LOGIN': return handleLogin(response as LoginResponse);
+  }
 }
 
 export function sendLogin(name: string) {
   send(login(name));
+}
+
+function handleLogin(response: LoginResponse) {
+  store.dispatch(setUser(response.user));
 }

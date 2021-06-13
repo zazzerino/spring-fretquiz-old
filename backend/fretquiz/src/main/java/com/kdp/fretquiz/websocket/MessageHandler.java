@@ -3,6 +3,7 @@ package com.kdp.fretquiz.websocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.kdp.fretquiz.user.UserController;
 import com.kdp.fretquiz.websocket.message.LoginMessage;
 import com.kdp.fretquiz.websocket.message.Message;
 import com.kdp.fretquiz.websocket.message.MessageType;
@@ -15,32 +16,46 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
-public class WebSocketHandler extends TextWebSocketHandler
+public class MessageHandler extends TextWebSocketHandler
 {
-    private final Logger log = LoggerFactory.getLogger(WebSocketHandler.class);
+    private final Logger log = LoggerFactory.getLogger(MessageHandler.class);
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final SessionHandler sessionHandler;
+    private final UserController userController;
+
+    public MessageHandler(SessionHandler sessionHandler, UserController userController)
+    {
+        this.sessionHandler = sessionHandler;
+        this.userController = userController;
+    }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception
+    public void afterConnectionEstablished(WebSocketSession session)
     {
         log.info("connection established: " + session.getId());
+        sessionHandler.add(session);
+        userController.connect(session);
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception
+    protected void handleTextMessage(WebSocketSession session, TextMessage text) throws Exception
     {
-        final var msg = decode(message.getPayload());
-        log.info("message received: " + msg);
+        final var message = decode(text.getPayload());
+        log.info("message received: " + message);
+
+//        if (message instanceof LoginMessage) {
+//        }
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)
     {
         log.info("connection closed: " + session.getId());
+        sessionHandler.remove(session);
     }
 
     private Message decode(String json) throws JsonProcessingException
     {
-        final var mapper = new ObjectMapper();
         final var message = mapper.readValue(json, ObjectNode.class);
 
         final var messageType = MessageType.valueOf(

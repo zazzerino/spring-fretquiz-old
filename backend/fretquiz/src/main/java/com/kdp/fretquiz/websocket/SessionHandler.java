@@ -1,0 +1,46 @@
+package com.kdp.fretquiz.websocket;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kdp.fretquiz.websocket.response.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Component
+public class SessionHandler
+{
+    private final Logger log = LoggerFactory.getLogger(SessionHandler.class);
+    private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public void add(WebSocketSession session)
+    {
+        sessions.put(session.getId(), session);
+    }
+
+    public void remove(WebSocketSession session)
+    {
+        sessions.remove(session.getId());
+    }
+
+    public void sendTo(WebSocketSession session, Response response)
+    {
+        try {
+            final var text = mapper.writeValueAsString(response);
+            session.sendMessage(new TextMessage(text));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    public void sendTo(String sessionId, Response response)
+    {
+        sendTo(sessions.get(sessionId), response);
+    }
+}

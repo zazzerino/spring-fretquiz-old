@@ -14,7 +14,7 @@ export function Login() {
         onChange={event => setName(event.target.value)}
       />
       <br />
-      <button onClick={() => sendLogin(name)}>
+      <button onClick={() => name && sendLogin(name)}>
         Login
       </button>
     </div>
