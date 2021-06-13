@@ -21,7 +21,7 @@ CREATE TABLE game (
 
 CREATE TABLE opts (
     id SERIAL PRIMARY KEY,
-    game_entity INTEGER,
+    game INTEGER,
     round_count INTEGER,
     start_fret INTEGER,
     end_fret INTEGER,
@@ -31,19 +31,19 @@ CREATE TABLE opts (
 );
 
 CREATE TABLE game_user (
-    game_entity INTEGER,
+    game INTEGER,
     "user" INTEGER
 );
 
 CREATE TABLE round (
-    game_entity INTEGER,
+    game INTEGER,
     game_key INTEGER,
     note_to_guess TEXT,
     is_over BOOLEAN
 );
 
 CREATE TABLE guess (
-    game_entity INTEGER,
+    game INTEGER,
     game_key INTEGER,
     round_key INTEGER,
     user_id INTEGER,

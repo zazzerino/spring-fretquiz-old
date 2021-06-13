@@ -37,7 +37,7 @@ class GameServiceTest
         final var game = gameService.createWith(user);
         log.info("game: " + game);
 
-        final var foundGame = gameService.getById(game.id()).orElseThrow();
+        final var foundGame = gameService.getGameById(game.id()).orElseThrow();
         log.info("found: " + foundGame);
 
         assertEquals(game, foundGame);
@@ -49,7 +49,7 @@ class GameServiceTest
         final var user = userService.createAnonymous("s0");
         final var game = gameService.createWith(user);
 
-        final var foundGame = gameService.getByUserId(user.id())
+        final var foundGame = gameService.getGameByUserId(user.id())
                 .orElseThrow();
 
         log.info(foundGame.toString());

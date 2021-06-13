@@ -2,10 +2,12 @@ package com.kdp.fretquiz.game;
 
 import com.kdp.fretquiz.user.UserService;
 import com.kdp.fretquiz.websocket.response.GameResponse;
+import com.kdp.fretquiz.websocket.response.GamesResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
@@ -31,5 +33,12 @@ public class GameController
         log.info("game created: " + game);
 
         return new GameResponse(game);
+    }
+
+    @SendTo("/topic/game")
+    public GamesResponse sendAllGames()
+    {
+        final var games = gameService.getAllGames();
+        return new GamesResponse(games);
     }
 }

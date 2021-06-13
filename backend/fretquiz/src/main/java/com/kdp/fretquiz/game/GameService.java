@@ -1,12 +1,12 @@
 package com.kdp.fretquiz.game;
 
-import com.kdp.fretquiz.game.ImmutableGame;
 import com.kdp.fretquiz.game.db.GameRepository;
 import com.kdp.fretquiz.game.db.entity.GameEntity;
 import com.kdp.fretquiz.user.User;
 import com.kdp.fretquiz.user.db.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +19,22 @@ public class GameService
         this.gameRepository = gameRepository;
     }
 
-    public Optional<Game> getById(Long gameId)
+    public List<Game> getAllGames()
+    {
+        return gameRepository.findAll().stream()
+                .map(entity -> {
+                    final var users = gameRepository
+                            .findUsers(entity.id)
+                            .stream()
+                            .map(UserEntity::toUser)
+                            .toList();
+
+                    return entity.toGameWith(users);
+                })
+                .toList();
+    }
+
+    public Optional<Game> getGameById(Long gameId)
     {
         final var users = gameRepository
                 .findUsers(gameId)
@@ -27,20 +42,15 @@ public class GameService
                 .map(UserEntity::toUser)
                 .toList();
 
-        final var entity = gameRepository.findById(gameId);
-
-        return entity.isEmpty()
-                ? Optional.empty()
-                : Optional.of(entity.get().toGameWith(users));
+        return gameRepository.findById(gameId)
+                .map(entity -> entity.toGameWith(users));
     }
 
-    public Optional<Game> getByUserId(Long userId)
+    public Optional<Game> getGameByUserId(Long userId)
     {
-        final var gameId = gameRepository.findGameId(userId);
-
-        return gameId.isEmpty()
-                ? Optional.empty()
-                : getById(gameId.get());
+        return gameRepository
+                .findGameId(userId)
+                .flatMap(this::getGameById);
     }
 
     public Game createWith(User host)
@@ -57,16 +67,13 @@ public class GameService
         return entity.toGameWith(users);
     }
 
-    public Optional<Game> sessionClosed(User user)
+    public void handleSessionClosed(User user)
     {
-        final var game = getByUserId(user.id())
-                .map(g -> g.removeUser(user));
-
-        if (game.isPresent()) {
-            final var entity = GameEntity.from(game.get());
-            gameRepository.save(entity);
-        }
-
-        return game;
+        getGameByUserId(user.id())
+                .map(game -> game.removeUser(user))
+                .ifPresent(game -> {
+                    final var entity = GameEntity.from(game);
+                    gameRepository.save(entity);
+                });
     }
 }

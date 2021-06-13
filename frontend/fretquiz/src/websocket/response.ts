@@ -1,3 +1,4 @@
+import { Game } from "../game/Game";
 import { User } from "../user/user";
 
 export type ResponseType =
@@ -9,17 +10,17 @@ export interface Response {
   type: ResponseType;
 }
 
-export interface Login extends Response {
+export interface LoginResponse extends Response {
   type: 'LOGIN';
   user: User;
 }
 
-export interface Game extends Response {
+export interface GameResponse extends Response {
   type: 'GAME';
   game: Game;
 }
 
-export interface Games extends Response {
+export interface GamesResponse extends Response {
   type: 'GAMES';
   games: Game[];
 }

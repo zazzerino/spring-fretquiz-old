@@ -3,6 +3,7 @@ package com.kdp.fretquiz.game.db.entity;
 import com.kdp.fretquiz.game.ImmutableRound;
 import com.kdp.fretquiz.game.Round;
 import com.kdp.fretquiz.theory.Note;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public class RoundEntity
 {
     public final String noteToGuess;
     public final boolean isOver;
+
+    @MappedCollection(idColumn = "game")
     public final List<GuessEntity> guesses;
 
     public RoundEntity(String noteToGuess, boolean isOver, List<GuessEntity> guesses)

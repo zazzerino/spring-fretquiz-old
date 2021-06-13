@@ -20,7 +20,15 @@ client.onConnect = _frame => {
     userCallback(JSON.parse(msg.body) as Response);
   });
 
+  // client.subscribe('/topic/user', msg => {
+  //   userCallback(JSON.parse(msg.body) as Response);
+  // });
+
   client.subscribe('/user/topic/game', msg => {
+    gameCallback(JSON.parse(msg.body) as Response);
+  });
+
+  client.subscribe('/topic/game', msg => {
     gameCallback(JSON.parse(msg.body) as Response);
   });
 

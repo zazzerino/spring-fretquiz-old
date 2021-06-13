@@ -9,7 +9,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Table("opts")
 public class OptsEntity

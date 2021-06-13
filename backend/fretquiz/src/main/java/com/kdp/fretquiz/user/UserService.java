@@ -39,7 +39,7 @@ public class UserService
         return user;
     }
 
-    public User sessionClosed(String sessionId)
+    public User handleSessionClosed(String sessionId)
     {
         final var entity = userRepository
                 .findBySessionId(sessionId)

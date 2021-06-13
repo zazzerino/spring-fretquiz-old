@@ -17,12 +17,12 @@ public interface GameRepository extends CrudRepository<GameEntity, Long>
     @Query("""
             SELECT "user".* FROM "user"
             LEFT JOIN game_user ON "user".id = game_user.user
-            WHERE game_user.game_entity = :gameId
+            WHERE game_user.game = :gameId
             """)
     List<UserEntity> findUsers(@Param("gameId") Long gameId);
 
     @Query("""
-            SELECT game_user.game_entity FROM game_user
+            SELECT game_user.game FROM game_user
             LEFT JOIN "user" ON "user".id = game_user.user
             WHERE game_user.user = :userId
             """)
